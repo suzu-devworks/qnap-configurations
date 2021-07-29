@@ -1,0 +1,6 @@
+# .gitattribues
+
+# 
+*           text=auto
+*.txt       text
+*.sh        text eol=lf

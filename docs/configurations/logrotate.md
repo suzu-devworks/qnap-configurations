@@ -1,11 +1,13 @@
 # logrotate
 
 ## Introduction
+
 python command の場合、logging でローテートするより、コンソールに出力しておいたほうが使い勝手良さそう。
 
 ### Environmet
+
 - QTS 4.5.1.1495 on TS-231K
-- logrotate (3.17.0-1) 
+  - logrotate (3.17.0-1) 
 
 ## Installation
 
@@ -24,6 +26,7 @@ Configuring logrotate.
 ```
 
 ### /opt/etc/logrotate.conf
+
 結果デフォルトでなにも指定していないが・・・
 
 ```:/opt/etc/logrotate.conf
@@ -49,33 +52,28 @@ include /opt/etc/logrotate.d
 # system-specific logs may be also be configured here.
 ```
 
+## cron setup
 
+### /etc/config/crontab
 
-cron setup
-/etc/config/crontab
+```/etc/config/crontab
 # m h dom m dow cmd
 ...
 50 13 * * * /opt/sbin/logrotate /opt/etc/logrotate.conf
+```
+cronを再起動。
 
-
-
-
-[~] # crontab /etc/config/crontab
-
-[~] # crontab -l
-...
-
+```console
 [~] # /etc/init.d/crond.sh restart
 Stopping periodic command scheduler: crond.
 Starting periodic command scheduler: crond.
+```
 
+## Custom Configuration
 
+### /opt/etc/logrotate.d/move-photo-files.conf
 
-
-
-Custom Configuration
-Local script rotation
-/opt/etc/logrotate.d/move-photo-files.conf
+```
 /share/Multimedia/logs/move-photo-files.log {
         missingok
         rotate 2
@@ -83,15 +81,15 @@ Local script rotation
         noolddir
         compress
 }
-
-
-
+```
 
 logrotate.conf に記載のある次は省略
-weekly
-create
+* weekly
+* create
 
-## dry-run
+### dry-run
+
+```console
 [~] # logrotate -dv /opt/etc/logrotate.conf
 WARNING: logrotate in debug mode does nothing except printing debug messages!  Consider using verbose mode (-v) instead if this is not what you want.
 
@@ -111,17 +109,14 @@ Creating new state
   Now: 2021-01-04 18:54
   Last rotated at 2021-01-04 18:00
   log does not need rotating (log has already been rotated)
+```
 
+### force-run
 
-## force-run
+```console
 [~] # logrotate -f /opt/etc/logrotate.conf
-
-
-
-
+```
 
 ## Reference
-QNAP TS-109II への syslog-ng の導入メモ — さめたすたすのお家
-logrotate入門
-任意のログをlogrotateを使って管理する
-logrotateの設定 | ゆるっとエンジニアブログ
+
+* [QNAP TS-109II への syslog-ng の導入メモ — さめたすたすのお家](http://www.sharkpp.net/blog/2013/01/27/install-qnap-ts-109ii-syslog-ng.html)

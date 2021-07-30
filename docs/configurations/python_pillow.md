@@ -1,69 +1,67 @@
-# Python Pillow Install
+# Python3 Pillow Install
 
 ## Introduction
 QNAP の Python3 で Pillow を使いたいだけなのよ。
 
+### Environmet
 
-Installation Pillow
-なんのことはない、opkg で python3 を入れるなら pillow もあるじゃん。というハナシ。
+- QTS 4.5.1.1495 on TS-231K
+    - Pillow 6.2.0-1
+- QTS QTS 4.3.3.0868 on TS-219PⅡ
+    - Pillow 6.0.0
 
-Installation Entware
+## Installation Pillow from Opkg
+
+最新なら pillow もあるじゃん。というハナシ。
+
+### Install Entware
+
 まず Entware をインストールして opkg を使えるようにします。
 
+```console
+[~] # opkg update
+Downloading http://bin.entware.net/armv5sf-k3.2/Packages.gz
+Updated list of available packages in /opt/var/opkg-lists/entware
+
+[~] #  opkg upgrade
+```
+### Install Pillow
+
+```console
+[~] #  opkg install python3 python3-pip python3-pillow
+```
+
+
+## [OBSOLETE] Installation Pillow
+
+### Install Entware
+
+まず Entware をインストールして opkg を使えるようにします。
+
+```console
 # opkg update
 Downloading http://bin.entware.net/armv5sf-k3.2/Packages.gz
 Updated list of available packages in /opt/var/opkg-lists/entware
 
 # opkg upgrade
+```
 
+### Install Dependency
 
-Install pillow and python3  
-# opkg install python3 python3-pip python3-pillow
-...
-
-# pip list
- Package      Version
------------- -------
-Click        7.0    
-Flask        1.0.3  
-itsdangerous 1.1.0  
-Jinja2       2.10.1 
-MarkupSafe   1.1.1  
-Pillow       6.0.0  
-pip          19.1.1 
-setuptools   41.0.1 
-Werkzeug     0.15.4 
-
-
-
-
-
-[OLD] Installation Pillow
-Installation Entware
-まず Entware をインストールして opkg を使えるようにします。
-
-# opkg update
-Downloading http://bin.entware.net/armv5sf-k3.2/Packages.gz
-Updated list of available packages in /opt/var/opkg-lists/entware
-
-# opkg upgrade
-
-
-Installation Dependency
 Pillow のインストールには libjpeg-dev と zlib-dev が必要らしいです。
 しかし、Entware には zlib-dev はありますが、libjpeg-devがありません。
 
 Entwareに* -devパッケージはありません（いくつかの例外はありますが）。
 Wikiに記述されているようにヘッダをインストールしてください。
 
-There are no *-dev packages in Entware(with few exceptions)!
+> There are no *-dev packages in Entware(with few exceptions)!
 Please install headers as described in the wiki:
-
-https://github.com/Entware/Entware/wiki
-
+>
+> https://github.com/Entware/Entware/wiki
 
 とりあえず実行用のライブラリを含めてインストールします。
 
+```console
 # opkg install libjpeg zlib zlib-dev
 Installing libjpeg (9c-2) to root...
 Downloading http://bin.entware.net/armv5sf-k3.2/libjpeg_9c-2_armv5-3.2.ipk
@@ -74,9 +72,11 @@ Downloading http://bin.entware.net/armv5sf-k3.2/zlib-dev_1.2.11-3_armv5-3.2.ipk
 Configuring libjpeg.
 Configuring zlib.
 Configuring zlib-dev.
+```
 
+### Install development tools
 
-Install development tools
+```console
 # 開発ツール一式？
 # opkg install gcc make gawk sed diffutils patch
 Installing gcc (6.3.0-1b) to root...
@@ -91,14 +91,13 @@ Downloading http://bin.entware.net/armv5sf-k3.2/autoconf_2.69-2a_armv5-3.2.ipk
 Installing m4 (1.4.18-1a) to root...
 Downloading http://bin.entware.net/armv5sf-k3.2/m4_1.4.18-1a_armv5-3.2.ipk
 Installing perl (5.28.1-1) to root...
+```
 
+### Setup temporary directory
 
-
-
-
-Setup temporary directory
 QNAP は大きな容量が必要なものは /share/MD0_DATA へ逃がす必要があります。
 
+```console
 # df -h
 Filesystem                Size      Used Available Use% Mounted on
 /dev/ramdisk             32.9M     16.7M     16.2M  51% /
@@ -113,16 +112,18 @@ tmpfs                     1.0M         0      1.0M   0% /mnt/rf/nd
 
 # export TMPDIR=/share/MD0_DATA/.workspace/tmp/
 # mkdir -p ${TMPDIR}/{cache,build}
+```
 
+### Configure libjpeg-dev from source code.
 
-Configure libjpeg-dev from source code.
 libjpeg-dev が無いため、libjpegソースコードからヘッダファイルを用意する必要があります。
 次のサイトでバージョンが一致しそうなファイルを取得します。
 
-http://www.ijg.org/files/
+* http://www.ijg.org/files/
 
 「libjpeg_9c-2_armv5-3.2.ipk」に近いバージョン「jpegsrc.v9c.tar.gz 」を取得します。
 
+```console
 # mkdir -p /opt/usr/src
 # cd /opt/usr/src
 # wget http://www.ijg.org/files/jpegsrc.v9c.tar.gz   
@@ -151,16 +152,18 @@ config.status: creating libjpeg.pc
 config.status: creating jconfig.h
 config.status: executing depfiles commands
 config.status: executing libtool commands
-
-
-
+```
 
 And ...
 マケタ感たっぷり。
+
+```console
 # ln -s arm-openwrt-linux-gnueabi-gcc /opt/bin/arm-none-linux-gnueabi-gcc
+```
 
+### Install Pillow by pip
 
-Install Pillow by pip 
+```console
 # . /etc/profile.d/python3.bash
 
 # export TMPDIR=/opt/tmp/
@@ -186,19 +189,18 @@ Pillow       6.0.0
 pip          19.1.1 
 setuptools   41.0.1 
 Werkzeug     0.15.4 
-
+```
 
 きたー。
 
 
+## Trace of hardship
 
-
-
-Trace of hardship
-<SOLVED>ERROR: No space left on device
+### <SOLVED>ERROR: No space left on device
 
 まずは 「App Center」で「Python3」がインストールされている状態で…
 
+```console
 # . /etc/profile.d/python3.bash
 
 # mkdir -p ${TMPDIR}/{cache,build}
@@ -217,24 +219,24 @@ MarkupSafe   1.1.1
 pip          19.1.1 
 setuptools   41.0.1 
 Werkzeug     0.15.4 
-
-
-
+```
 
 pip だの setuptools だのがやたら新しい気がする。
 
+```console
 # pip3 install pillow
 Collecting pillow
   Downloading https://files.pythonhosted.org/packages/81/1a/6b2971adc1bca55b9a53ed1efa372acff7e8b9913982a396f3fa046efaf8/c.tar.gz (29.5MB)
      |████████████████████████████████| 29.5MB 1.5MB/s 
 ERROR: Could not install packages due to an EnvironmentError: [Errno 28] No space left on device
-
+```
 
 なんだと？
 QTSは、ほぼramdiskなはずなので、大きな作業領域はHDDに取らないと無理なはずだ。
 
-<SOLVED>ERROR: The headers or library files could not be found for jpeg,
+### <SOLVED>ERROR: The headers or library files could not be found for jpeg,
 
+```console
 # . /etc/profile.d/python3.bash
 
 # export TMPDIR=/share/MD0_DATA/.workspace/tmp/
@@ -257,12 +259,14 @@ Installing collected packages: pillow
 ... 
     ----------------------------------------
 ERROR: Command "/share/MD0_DATA/.qpkg/Python3/src/bin/python3 -u -c 'import setuptools, tokenize;__file__='"'"'/share/MD0_DATA/.workspace/tmp/build/pillow/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' install --record /share/MD0_DATA/.workspace/tmp/pip-record-49p4x2kz/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /share/MD0_DATA/.workspace/tmp/build/pillow/
-
+```
 
 ほう、libjpegが無いだと...
 もう opkg いれるしかないじゃん。
 
-<SOLVED>ERROR: unable to execute 'arm-none-linux-gnueabi-gcc': No such file or directory
+### <SOLVED>ERROR: unable to execute 'arm-none-linux-gnueabi-gcc': No such file or directory
+
+```console
 # . /etc/profile.d/python3.bash
 
 # mkdir -p /share/MD0_DATA/.workspace/tmp/build
@@ -276,7 +280,6 @@ ERROR: Command "/share/MD0_DATA/.qpkg/Python3/src/bin/python3 -u -c 'import setu
 # ln -s /share/MD0_DATA/.workspace/src/jconfig.h /opt/include/
 # ln -s /share/MD0_DATA/.workspace/src/jmorecfg.h /opt/include/
 # ln -s /share/MD0_DATA/.workspace/src/jpeglib.h /opt/include/
-
 
 # CC=gcc CFLAGS="-I/opt/include -I" pip3 install --no-cache-dir --build=${TMPDIR}/build/ pillow
 Collecting pillow
@@ -302,23 +305,15 @@ Installing collected packages: pillow
     error: command 'arm-none-linux-gnueabi-gcc' failed with exit status 1
     ----------------------------------------
 ERROR: Command "/share/MD0_DATA/.qpkg/Python3/src/bin/python3 -u -c 'import setuptools, tokenize;__file__='"'"'/share/MD0_DATA/.workspace/tmp/build/pillow/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' install --record /share/MD0_DATA/.workspace/tmp/pip-record-ktc23ife/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /share/MD0_DATA/.workspace/tmp/build/pillow/
-
+```
 
 少しだけ進みました。
+
 'arm-none-linux-gnueabi-gcc' ってCROSSコンパイラが動いています。
 でもそんなファイルはありません。
 
+## Reference
 
-Reference
-https://github.com/python-pillow/Pillow
-https://bin.entware.net/armv5sf-k3.2/Packages.html
-Compile packages from sources - Entware
-
-
-History
-2021-01-02 on TS-231K QTS 4.5.1.1495 (2020-11-23)
-Python 3.9.0 
-Pillow 6.2.0-1
-2019-06-16 on TS-219PⅡ QTS 4.3.3.0868 (2019-03-22)
-Pillow 6.0.0
-
+* https://github.com/python-pillow/Pillow
+* https://bin.entware.net/armv5sf-k3.2/Packages.html
+* [Compile packages from sources - Entware](https://github.com/Entware/Entware/wiki/Compile-packages-from-sources)

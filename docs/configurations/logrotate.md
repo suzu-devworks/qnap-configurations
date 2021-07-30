@@ -64,6 +64,8 @@ include /opt/etc/logrotate.d
 cronを再起動。
 
 ```console
+[~] # crontab /etc/config/crontab
+
 [~] # /etc/init.d/crond.sh restart
 Stopping periodic command scheduler: crond.
 Starting periodic command scheduler: crond.

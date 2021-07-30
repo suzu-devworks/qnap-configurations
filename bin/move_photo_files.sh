@@ -1,7 +1,7 @@
 #!/opt/bin/sh
 
 python=/opt/bin/python3
-script_base=/share/homes/admin/repos/qnap-configuration
+script_base=/share/homes/admin/repos/qnap-configurations
 script1=${script_base}/src/move_photo_files/move_photo_files.py
 script2=${script_base}/src/move_photo_files/move_other_image_files.py
 

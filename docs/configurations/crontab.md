@@ -50,12 +50,14 @@ QNAPにおけるcronの設定をまとめる。
 07 08 * * * /mnt/ext/opt/QcloudSSLCertificate/bin/ssl_agent_cli
 50 23 * * 1 /etc/init.d/poweroff
 0 7 * * 2 /etc/init.d/startup
-2 10,16 * * * /share/homes/admin/qnap-configurations/bin/cron_exec_local.sh 1>/dev/null 2>&1
+2 10,16 * * * /share/homes/admin/repos/qnap-configurations/bin/cron_exec_local.sh 1>/dev/null 2>&1
 ```
 
 コマンドで再起動。
 
 ```console
+# crontab /etc/config/crontab
+
 # /etc/init.d/crond.sh restart
 Stopping periodic command scheduler: crond.
 Starting periodic command scheduler: crond.

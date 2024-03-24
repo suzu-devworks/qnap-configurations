@@ -1,6 +1,9 @@
 # Opkg Install
 
 ## Introduction
+
+> 久しぶりに確認したら QTS 5.1.5 では　Entware-std がインストールできなくなっていました。
+
 QNAP の NAS TS-219PⅡ では 「git」 すらインストールされていない。リソース的に「Container Station」ができたにしても「GitLab」は無理そうだし。
 
 でも「Python3」があるからちょっとしたツールは動かせそう。。。

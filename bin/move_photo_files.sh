@@ -1,16 +1,23 @@
-#!/opt/bin/sh
+#!/bin/sh
 
-python=/opt/bin/python3
-script_base=/share/homes/admin/repos/qnap-configurations
-script1=${script_base}/src/move_photo_files/move_photo_files.py
-script2=${script_base}/src/move_photo_files/move_other_image_files.py
+root_dir=$(cd $(dirname ${0})/../ && pwd)
+# python=${root_dir}/.venv/bin/python
+python=/usr/bin/python3
 
-log=/share/Multimedia/logs/move-photo-files.log
-src_dir=/share/Multimedia/Camera\ Uploads
-dest_dir=/share/Multimedia/Photo
+working_root=/mnt/Multimedia
+src_dir=${working_root}/Camera\ Uploads
+dest_dir=${working_root}/Photo
+# log_file=${working_root}/logs/move_photo_files.log
 
-echo ${script1} -o "${dest_dir}" "${src_dir}"
-${python} ${script1} -o "${dest_dir}" "${src_dir}" 2>&1 | tee -a ${log}
+scripts=`cat <<EOS
+${root_dir}/src/move_photo_files/move_photo_files.py
+${root_dir}/src/move_photo_files/move_other_image_files.py
+EOS
+`
 
-echo ${script2} -o "${dest_dir}" "${src_dir}"
-${python} ${script2} -o "${dest_dir}" "${src_dir}" 2>&1 | tee -a ${log}
+for script in ${scripts}; do
+    # ${python} ${script} -o "${dest_dir}" "${src_dir}" 2>&1 | tee -a ${log_file}
+    ${python} ${script} -o "${dest_dir}" "${src_dir}"
+done
+
+exit 0

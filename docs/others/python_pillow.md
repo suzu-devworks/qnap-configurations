@@ -3,7 +3,7 @@
 ## Introduction
 QNAP の Python3 で Pillow を使いたいだけなのよ。
 
-### Environmet
+### Environment
 
 - QTS 4.5.1.1495 on TS-231K
     - Pillow 6.2.0-1

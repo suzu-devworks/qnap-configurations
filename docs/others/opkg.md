@@ -11,7 +11,7 @@ QNAP の NAS TS-219PⅡ では 「git」 すらインストールされていな
 なんて思ったら、libjpeg が無いので Pillow がインストールできない。
 これかぁ。 
 
-### Environmet
+### Environment
 
 - QTS 4.5.1.1495 on TS-231K
     - Entware-std 1.03

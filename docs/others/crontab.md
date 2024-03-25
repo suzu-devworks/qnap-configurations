@@ -4,15 +4,15 @@
 
 QNAPにおけるcronの設定をまとめる。
 
-### Environmet
+### Environment
 
 - QTS 4.5.1.1495 on TS-231K
     - BusyBox v1.01 (2020.11.22-20:02+0000) multi-call binary
 
 ## Configuration
 
-通常の ```crotab -e``` で編集しても、再起動時には初期化されてしまう。
-```/etc/config/crontab``` を直接編集するのが正しいらしい。
+通常の `crotab -e` で編集しても、再起動時には初期化されてしまう。
+`/etc/config/crontab` を直接編集するのが正しいらしい。
 
 ```:/etc/config/crontab
 # m h dom m dow cmd

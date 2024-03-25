@@ -4,7 +4,7 @@
 
 python command の場合、logging でローテートするより、コンソールに出力しておいたほうが使い勝手良さそう。
 
-### Environmet
+### Environment
 
 - QTS 4.5.1.1495 on TS-231K
   - logrotate (3.17.0-1) 

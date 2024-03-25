@@ -1,10 +1,5 @@
 # qnap-configurations
 
-## Table of Contents <!-- omit in toc -->
-
-- [qnap-configurations](#qnap-configurations)
-  - [Environment](#environment)
-  - [Configurations](#configurations)
 
 ## Environment
 

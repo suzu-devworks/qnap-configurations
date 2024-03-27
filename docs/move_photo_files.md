@@ -34,6 +34,7 @@ That's why I'm using the Pillow library.
 - QTS 5.1.5.2679(2024-02-29) on TS-231K
 - Container Station 3.0.6.833(2024/02/06)
   - Docker version 20.10.27-qnap1, build 662936b
+  - debian:bookworm-slim (bookworm-20240311-slim, 12.5-slim, 12-slim)
 
 
 ## Create a container
@@ -100,22 +101,27 @@ Check the python path settings in `move_photo_files.sh`
 python=/usr/bin/python3
 ```
 
+> container size is 281MB.
+
 ### Use venv
 
 All you need in python3 are the following three packages:
 
 ```shell
-sudo apt install -y python3 python3-venv python3-pip
+apt install -y python3 python3-venv python3-pip
+
+# dependencies for pillow
+apt install -y libjpeg62-turbo-dev
 ```
 
 I used venv, but the packaged python might be faster.
 
 ```shell
-python -m venv .venv
+python3 -m venv .venv
 . .venv/bin/activate
 
 python -m pip install --upgrade pip
-pip install -y pdm
+pip install pdm
 ```
 
 Restore package.
@@ -130,6 +136,8 @@ Check the python path settings in `move_photo_files.sh`
 root_dir=$(cd $(dirname ${0})/../ && pwd)
 python=${root_dir}/.venv/bin/python
 ```
+
+> container size is 581MB.
 
 ## Test Run
 
@@ -174,13 +182,13 @@ This configuration is done in docker host.
 Even if you set it with `crontab -e`, it seems to disappear.
 
 ```shell
-vim /etc/config/crontab
+sudo vi /etc/config/crontab
 ```
 
-For example, if it starts every 12 hours:
+For example, to start at 15:05 and 20:05 every day:
 
 ```crontab
-5 */12 * * * docker exec -e debian-1 sh -c "/home/qnap/qnap-configurations/bin/move_photo_files.sh > /dev/pts/0 2>&1" > /dev/null 2>&1
+5 15,20 * * * docker exec debian-1 sh -c "/home/qnap/qnap-configurations/bin/move_photo_files.sh > /dev/pts/0 2>&1" > /dev/null 2>&1
 ```
 
 Redirects to the console device `/dev/pts/0` to output to the container log.
@@ -188,12 +196,12 @@ Redirects to the console device `/dev/pts/0` to output to the container log.
 Restarting crond
 
 ```shell
-crontab /etc/config/crontab
-/etc/init.d/crond.sh restart
+sudo crontab /etc/config/crontab
+sudo /etc/init.d/crond.sh restart
 ```
 
 Check the settings
 
 ```shell
-crontab -l
+sudo crontab -l
 ```

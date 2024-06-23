@@ -105,7 +105,8 @@ def move_file(source: Path, dest: Path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Organize and move photo files into folders.")
+    parser = argparse.ArgumentParser(
+        description="Organize and move photo files into folders.")
     parser.add_argument(
         "-o", "--out", default=None, help="destination folder path.(default src_path)", dest="dest_path"
     )
@@ -124,7 +125,8 @@ def main():
         for path in find_photo_files(source_path):
             date_of_shooting = do_operation_image(path, get_exif_shooting_date)
             if not isinstance(date_of_shooting, datetime):
-                logger.warning("can not get the shooting date of EXIF: {}".format(path))
+                logger.warning(
+                    "can not get the shooting date of EXIF: {}".format(path))
                 continue
 
             dest_path = dest_path_root / date_of_shooting.strftime("%Y/%Y-%m")

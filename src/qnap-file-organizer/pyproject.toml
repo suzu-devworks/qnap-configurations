@@ -1,0 +1,57 @@
+[project]
+authors = [
+  {name = "A.suzuki", email = "suzu.devworks@gmail.com"},
+]
+dependencies = [
+  "pillow>=10.3.0",
+]
+description = "Add your description here"
+name = "qnap-file-organizer"
+readme = "README.md"
+requires-python = ">= 3.8"
+version = "0.1.0"
+
+[project.scripts]
+"organizer-cli" = "qnap_file_organizer:main"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.rye]
+dev-dependencies = [
+  "flake8>=7.1.0",
+  "mypy>=1.10.0",
+  "black>=24.4.2",
+  "isort>=5.13.2",
+  "pyclean>=3.0.0",
+]
+managed = true
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qnap_file_organizer"]
+
+[tool.black]
+line-length = 119
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "scripts"]
+
+[tool.mypy]
+files = ["src", "scripts"]
+pretty = true
+show_error_context = true
+strict = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = ['PIL', 'PIL.ExifTags']
+
+[tool.rye.scripts]
+clean = "pyclean ."
+format = {chain = ["isort .", "black ."]}
+lint = {chain = ["flake8", "mypy"]}

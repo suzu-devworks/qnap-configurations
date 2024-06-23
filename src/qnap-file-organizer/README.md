@@ -7,25 +7,33 @@ I think we can give it some more thought, such as stopping the use of python scr
 ---
 [![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye.astral.sh)
 
-
 ## Table of Contents <!-- omit in toc -->
 
-
-
+- [qnap-file-organizer](#qnap-file-organizer)
+  - [Environment](#environment)
+  - [Move photo files](#move-photo-files)
+    - [Setup](#setup)
+    - [Build container image](#build-container-image)
+    - [Run manually](#run-manually)
+  - [Scheduling](#scheduling)
+  - [Development](#development)
+    - [Install package manager](#install-package-manager)
+    - [Create project](#create-project)
+    - [First Sync](#first-sync)
+    - [install dependency package](#install-dependency-package)
+    - [build package](#build-package)
 
 ## Environment
 
 - QTS 5.1.7.2770(2024-05-20) on TS-231K
 - Container Station 3.0.7.891(2024/05/09)
-  - Docker version 20.10.27-qnap1, build 662936b
-  - debian:bookworm-slim (bookworm-20240311-slim, 12.5-slim, 12-slim)
-
+- Docker version 20.10.27-qnap1, build 662936b
 
 ## Move photo files
 
 Organize your jumbled photo files by date.
 
-```
+```console
 /Multimedia
   /Camera\ Uploads  ... source folder
   ...
@@ -35,14 +43,73 @@ Organize your jumbled photo files by date.
     ...
 ```
 
-The shooting date is obtained from EXIF.<br>
+The shooting date is obtained from EXIF.  
 That's why I'm using the Pillow library.
 
 ### Setup
 
-...wmm
+Enter qnap via ssh.
 
+```shell
+cd /share/homes/qnap
 
+mkdir repos
+cd repos
+```
+
+I want to get the repository, but I don't have git.
+
+I found a useful image:
+
+```shell
+docker run -it --rm -v $(pwd):/git alpine/git clone https://github.com/suzu-devworks/qnap-configurations.git
+```
+
+### Build container image
+
+```shell
+docker build . -t qnap-file-organizer
+```
+
+### Run manually
+
+```shell
+docker run -it --rm \
+  -v "/share/Multimedia/Photo:/mnt/dist" \
+  -v "/share/Multimedia/Camera Uploads:mnt/source" \
+  qnap-file-organizer 
+```
+
+## Scheduling
+
+This configuration is done in docker host.
+
+Even if you set it with `crontab -e`, it seems to disappear.
+
+```shell
+sudo vi /etc/config/crontab
+```
+
+For example, to start at 15:05 and 20:05 every day:
+
+```crontab
+5 15,20 * * * docker run -it -v "/share/Multimedia/Photo:/mnt/dist" -v "/share/Multimedia/Camera Uploads:mnt/source" qnap-file-organizer > /dev/pts/0 2>&1
+```
+
+Redirects to the console device `/dev/pts/0` to output to the container log.
+
+Restarting crond
+
+```shell
+sudo crontab /etc/config/crontab
+sudo /etc/init.d/crond.sh restart
+```
+
+Check the settings
+
+```shell
+sudo crontab -l
+```
 
 ## Development
 
@@ -76,7 +143,7 @@ cd qnap-file-organizer
 
 ### First Sync
 
-you can use rye sync to get the first synchronization. After that, 
+you can use rye sync to get the first synchronization. After that,
 Rye will have created a virtualenv in `.venv` and written lockfiles into `requirements.lock` and `requirements-dev.lock`.
 
 ```shell
@@ -96,4 +163,3 @@ rye add pillow
 ### build package
 
 Not packaged yet.
-

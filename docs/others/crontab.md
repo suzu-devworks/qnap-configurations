@@ -7,14 +7,15 @@ QNAPにおけるcronの設定をまとめる。
 ### Environment
 
 - QTS 4.5.1.1495 on TS-231K
-    - BusyBox v1.01 (2020.11.22-20:02+0000) multi-call binary
+  - BusyBox v1.01 (2020.11.22-20:02+0000) multi-call binary
 
 ## Configuration
 
 通常の `crotab -e` で編集しても、再起動時には初期化されてしまう。
 `/etc/config/crontab` を直接編集するのが正しいらしい。
 
-```:/etc/config/crontab
+<!-- cSpell:disable -->
+```crontab
 # m h dom m dow cmd
 0-59/20 3 * * * /sbin/adjust_time
 0 1 * * * /etc/init.d/flush_memory.sh >/dev/null 2>&1
@@ -52,13 +53,16 @@ QNAPにおけるcronの設定をまとめる。
 0 7 * * 2 /etc/init.d/startup
 2 10,16 * * * /share/homes/admin/repos/qnap-configurations/bin/cron_exec_local.sh 1>/dev/null 2>&1
 ```
+<!-- cSpell:enable -->
 
 コマンドで再起動。
 
-```console
-# crontab /etc/config/crontab
+```shell
+crontab /etc/config/crontab
+/etc/init.d/crond.sh restart
+```
 
-# /etc/init.d/crond.sh restart
+```console
 Stopping periodic command scheduler: crond.
 Starting periodic command scheduler: crond.
 ```
@@ -71,4 +75,4 @@ crontab -l
 
 ## References
 
-* [qnapのcronの設定](https://ymraintree.hatenadiary.org/entry/20120919/1348035056)
+- [qnapのcronの設定](https://ymraintree.hatenadiary.org/entry/20120919/1348035056)

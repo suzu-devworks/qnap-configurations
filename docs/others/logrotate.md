@@ -7,16 +7,24 @@ python command の場合、logging でローテートするより、コンソー
 ### Environment
 
 - QTS 4.5.1.1495 on TS-231K
-  - logrotate (3.17.0-1) 
+  - logrotate (3.17.0-1)
 
 ## Installation
 
+```shell
+opkg update
+```
+
 ```console
-[~] # opkg update
 Downloading http://bin.entware.net/armv5sf-k3.2/Packages.gz
 Updated list of available packages in /opt/var/opkg-lists/entware
+```
 
-[~] # opkg install logrotate
+```shell
+opkg install logrotate
+```
+<!-- cSpell:disable -->
+```console
 Installing logrotate (3.15.0-2) to root...
 Downloading http://bin.entware.net/armv5sf-k3.2/logrotate_3.15.0-2_armv5-3.2.ipk
 Installing libpopt (1.16-2) to root...
@@ -24,11 +32,13 @@ Downloading http://bin.entware.net/armv5sf-k3.2/libpopt_1.16-2_armv5-3.2.ipk
 Configuring libpopt.
 Configuring logrotate.
 ```
+<!-- cSpell:enable -->
 
 ### /opt/etc/logrotate.conf
 
 結果デフォルトでなにも指定していないが・・・
 
+<!-- cSpell:disable -->
 ```:/opt/etc/logrotate.conf
 # see "man logrotate" for details
 # rotate log files weekly
@@ -51,6 +61,7 @@ include /opt/etc/logrotate.d
 
 # system-specific logs may be also be configured here.
 ```
+<!-- cSpell:enable -->
 
 ## cron setup
 
@@ -61,12 +72,15 @@ include /opt/etc/logrotate.d
 ...
 50 13 * * * /opt/sbin/logrotate /opt/etc/logrotate.conf
 ```
+
 cronを再起動。
 
-```console
-[~] # crontab /etc/config/crontab
+```shell
+crontab /etc/config/crontab
+/etc/init.d/crond.sh restart
+```
 
-[~] # /etc/init.d/crond.sh restart
+```console
 Stopping periodic command scheduler: crond.
 Starting periodic command scheduler: crond.
 ```
@@ -75,7 +89,8 @@ Starting periodic command scheduler: crond.
 
 ### /opt/etc/logrotate.d/move-photo-files.conf
 
-```
+<!-- cSpell:disable -->
+```conf
 /share/Multimedia/logs/move-photo-files.log {
         missingok
         rotate 2
@@ -84,15 +99,21 @@ Starting periodic command scheduler: crond.
         compress
 }
 ```
+<!-- cSpell:enable -->
 
 logrotate.conf に記載のある次は省略
-* weekly
-* create
+
+- weekly
+- create
 
 ### dry-run
 
+```shell
+logrotate -dv /opt/etc/logrotate.conf
+```
+
+<!-- cSpell:disable -->
 ```console
-[~] # logrotate -dv /opt/etc/logrotate.conf
 WARNING: logrotate in debug mode does nothing except printing debug messages!  Consider using verbose mode (-v) instead if this is not what you want.
 
 reading config file /opt/etc/logrotate.conf
@@ -112,13 +133,14 @@ Creating new state
   Last rotated at 2021-01-04 18:00
   log does not need rotating (log has already been rotated)
 ```
+<!-- cSpell:enable -->
 
 ### force-run
 
-```console
-[~] # logrotate -f /opt/etc/logrotate.conf
+```shell
+logrotate -f /opt/etc/logrotate.conf
 ```
 
 ## Reference
 
-* [QNAP TS-109II への syslog-ng の導入メモ — さめたすたすのお家](http://www.sharkpp.net/blog/2013/01/27/install-qnap-ts-109ii-syslog-ng.html)
+- [QNAP TS-109II への syslog-ng の導入メモ — さめたすたすのお家](http://www.sharkpp.net/blog/2013/01/27/install-qnap-ts-109ii-syslog-ng.html)

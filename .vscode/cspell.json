@@ -1,0 +1,31 @@
+{
+  "version": "0.2",
+  "ignorePaths": [
+    ".git",
+    ".devcontainer",
+    ".config",
+    ".github",
+    ".vscode",
+    "*.lock",
+    ".*"
+  ],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "CFLAGS",
+    "cpython",
+    "crond",
+    "crotab",
+    "devcontainers",
+    "Entware",
+    "EXIF",
+    "OPKG",
+    "pyprojecy",
+    "QNAP",
+    "qpkg",
+    "TMPDIR",
+    "WORKDIR"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

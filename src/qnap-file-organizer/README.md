@@ -13,6 +13,7 @@ I think we can give it some more thought, such as stopping the use of python scr
   - [Environment](#environment)
   - [Move photo files](#move-photo-files)
     - [Setup](#setup)
+    - [Fix directory permissions](#fix-directory-permissions)
     - [Build container image](#build-container-image)
     - [Run manually](#run-manually)
   - [Scheduling](#scheduling)
@@ -65,9 +66,17 @@ I found a useful image:
 docker run -it --rm -v $(pwd):/git alpine/git clone https://github.com/suzu-devworks/qnap-configurations.git
 ```
 
+### Fix directory permissions
+
+```shell
+sudo chown qnap -R qnap-configurations
+cd qnap-configurations
+```
+
 ### Build container image
 
 ```shell
+cd src/qnap-file-organizer/
 docker build . -t qnap-file-organizer
 ```
 
@@ -76,7 +85,7 @@ docker build . -t qnap-file-organizer
 ```shell
 docker run -it --rm \
   -v "/share/Multimedia/Photo:/mnt/dist" \
-  -v "/share/Multimedia/Camera Uploads:mnt/source" \
+  -v "/share/Multimedia/Camera Uploads:/mnt/source" \
   qnap-file-organizer 
 ```
 
@@ -93,7 +102,7 @@ sudo vi /etc/config/crontab
 For example, to start at 15:05 and 20:05 every day:
 
 ```crontab
-5 15,20 * * * docker run -it -v "/share/Multimedia/Photo:/mnt/dist" -v "/share/Multimedia/Camera Uploads:mnt/source" qnap-file-organizer > /dev/pts/0 2>&1
+5 15,20 * * * docker run -it -v "/share/Multimedia/Photo:/mnt/dist" -v "/share/Multimedia/Camera Uploads:/mnt/source" qnap-file-organizer >/dev/pts/0 2>&1
 ```
 
 Redirects to the console device `/dev/pts/0` to output to the container log.
@@ -145,6 +154,9 @@ cd qnap-file-organizer
 
 you can use rye sync to get the first synchronization. After that,
 Rye will have created a virtualenv in `.venv` and written lockfiles into `requirements.lock` and `requirements-dev.lock`.
+<!-- cSpell:word virtualenv -->
+<!-- cSpell:word venv -->
+<!-- cSpell:word lockfiles -->
 
 ```shell
 rye sync
@@ -159,6 +171,9 @@ Please guess what changes were made to `pyprojecy.toml` after adding the develop
 rye add --dev flake8 mypy black isort pyclean
 rye add pillow
 ```
+<!-- cSpell:word mypy -->
+<!-- cSpell:word isort -->
+<!-- cSpell:word pyclean -->
 
 ### build package
 

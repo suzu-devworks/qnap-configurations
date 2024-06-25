@@ -56,7 +56,7 @@ def move_file(source: Path, dest: Path):
 
     try:
         # shutil.copy2(str(source), str(dest))
-        # shutil.move(str(source), str(dest))
+        shutil.move(str(source), str(dest))
         logger.debug("move: {} -> {}".format(source, dest))
 
     except shutil.Error as e:

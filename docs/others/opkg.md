@@ -1,4 +1,4 @@
-# Opkg Install
+# OPKG Install
 
 ## Introduction
 
@@ -9,38 +9,44 @@ QNAP の NAS TS-219PⅡ では 「git」 すらインストールされていな
 でも「Python3」があるからちょっとしたツールは動かせそう。。。
 
 なんて思ったら、libjpeg が無いので Pillow がインストールできない。
-これかぁ。 
+これかぁ。
+<!-- cSpell:word libjpeg -->
 
 ### Environment
 
 - QTS 4.5.1.1495 on TS-231K
-    - Entware-std 1.03
+  - Entware-std 1.03
 - QTS QTS 4.3.3.0868 on TS-219PⅡ
-    - Entware-std 1.0 
+  - Entware-std 1.0
 
 ### Check CPU Architecture
 
 ARMv5 と ARMv7 があるらしいので調査。
 
-```console
-[~] # cat /proc/cpuinfo
-Processor name	: Feroceon 88F6282 rev 1 (v5l) @ 2 GHz 
-BogoMIPS	: 1980.82
-Features	: swp half thumb fastmult edsp 
-CPU implementer	: 0x56
-CPU architecture: 5TE
-CPU variant	: 0x2
-CPU part	: 0x131
-CPU revision	: 1
-
-Hardware	: Feroceon-KW ARM
-Revision	: 0000
-Serial		: 0000000000000000
+```shell
+cat /proc/cpuinfo
 ```
 
+<!-- cSpell:disable -->
+```console
+Processor name : Feroceon 88F6282 rev 1 (v5l) @ 2 GHz 
+BogoMIPS : 1980.82
+Features : swp half thumb fastmult edsp 
+CPU implementer : 0x56
+CPU architecture: 5TE
+CPU variant : 0x2
+CPU part : 0x131
+CPU revision : 1
+
+Hardware : Feroceon-KW ARM
+Revision : 0000
+Serial  : 0000000000000000
+```
+<!-- cSpell:enable -->
+
 これが、"ARMv5TE" ってことらしいです。
- 
-## Installlation Entware
+
+## Install Entware
 
 ### Add QNAP Club repository
 
@@ -49,26 +55,33 @@ EU 圏の QNAP Club のリポジトリを追加します。
 
 「App Center」→「設定」→「アプリジポジトリ」
 
-* 「追加」
-    * 名前： QNAP Club（任意）
-    * URL： https://www.qnapclub.eu/en/repo.xml
-    * ユーザー名： （入力しない）
-    * パスワード： （入力しない）
+- 「追加」
+  - 名前： QNAP Club（任意）
+  - URL： <https://www.qnapclub.eu/en/repo.xml>
+  - ユーザー名： （入力しない）
+  - パスワード： （入力しない）
 
-### Add Entware-std 
+### Add Entware-std
 
 追加した QNAP Club から 「Entware-std」を探してインストールします。
 
 ### Update Package
 
+```shell
+opkg update
+```
+
 ```console
-[~] # opkg update
 Downloading http://bin.entware.net/armv5sf-k3.2/Packages.gz
 Updated list of available packages in /opt/var/opkg-lists/entware
+```
 
-[~] # opkg upgrade
+```shell
+opkg upgrade
+```
 
-
+<!-- cSpell:disable -->
+```console
 List installed packages
 [~] # opkg list-installed
 entware-opt - 227000-3
@@ -89,15 +102,17 @@ terminfo - 6.1-4
 zoneinfo-asia - 2019a-1
 zoneinfo-europe - 2019a-1
 ```
+<!-- cSpell:enable -->
 
 ### List Available packages
 
-```console
-[~] # opkg list-upgradable
+```shell
+opkg list-upgradable
 ```
 
 ## Reference
 
-* [[OpenWrt Wiki] packages:index:start](https://openwrt.org/packages/index/start)
-* [[OpenWrt Wiki] Opkg Package Manager](https://openwrt.org/docs/guide-user/additional-software/opkg)
-* [QNAP に git や nginx などをインストールする [2018年末版 Entware で Opkg 編] - Qiita](https://qiita.com/KEINOS/items/f832ada264257300e4d7)
+- [[OpenWrt Wiki] packages:index:start](https://openwrt.org/packages/index/start)
+- [[OpenWrt Wiki] Opkg Package Manager](https://openwrt.org/docs/guide-user/additional-software/opkg)
+- [QNAP に git や nginx などをインストールする [2018年末版 Entware で Opkg 編] - Qiita](https://qiita.com/KEINOS/items/f832ada264257300e4d7)
+<!-- cSpell:word Qiita -->

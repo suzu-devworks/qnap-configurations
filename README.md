@@ -3,9 +3,9 @@
 
 ## Environment
 
-- QTS 5.1.5.2679(2024-02-29) on TS-231K
+- QTS 5.1.7.2770(2024-05-20) on TS-231K
 
 ## Configurations
 
-- [Move photo files](./docs/move_photo_files.md)
+- [qnap-file-organizer](./src/qnap-file-organizer/README.md)
 

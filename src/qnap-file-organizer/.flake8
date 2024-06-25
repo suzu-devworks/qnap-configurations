@@ -1,5 +1,5 @@
 [flake8]
-extend-ignore = E203
+extend-ignore = E203,W503
 max-line-length = 119
 exclude = .git,.venv,doc,__pycache__,__pypackages__,old,build,dist,temp
 
